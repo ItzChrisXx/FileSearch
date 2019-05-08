@@ -1,0 +1,6 @@
+C:\Users\Chris\source\repos\Filesearch\SearchLib\bin\Debug\SearchLib.dll
+C:\Users\Chris\source\repos\Filesearch\SearchLib\bin\Debug\SearchLib.pdb
+C:\Users\Chris\source\repos\Filesearch\SearchLib\obj\Debug\SearchLib.csprojResolveAssemblyReference.cache
+C:\Users\Chris\source\repos\Filesearch\SearchLib\obj\Debug\SearchLib.csproj.CoreCompileInputs.cache
+C:\Users\Chris\source\repos\Filesearch\SearchLib\obj\Debug\SearchLib.dll
+C:\Users\Chris\source\repos\Filesearch\SearchLib\obj\Debug\SearchLib.pdb
