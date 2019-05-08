@@ -51,30 +51,30 @@ namespace Filesearch
         {
             DirectorySearch directory = new DirectorySearch(path, filter);
             int state = directory.FindFiles();
-            if (state == 0)
+            switch (state)
             {
-                Dispatcher.Invoke(() =>
-                {
-                    lvFindings.Items.Clear();
-                    foreach (var p in directory.Findings)
+                case 0:
+                    Dispatcher.Invoke(() =>
                     {
-                        lvFindings.Items.Add(new DisplayOfFindings { Path = p });
-                    }
-                });
-            }
-            else if (state == 1) //no filter
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    tbcSearchError.Visibility = Visibility.Visible;
-                });
-            }
-            else if (state == 2) //wrong path
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    tbcDirectoryError.Visibility = Visibility.Visible;
-                });
+                        lvFindings.Items.Clear();
+                        foreach (var p in directory.Findings)
+                        {
+                            lvFindings.Items.Add(new DisplayOfFindings { Path = p });
+                        }
+                    });
+                    break;
+                case 1:
+                    Dispatcher.Invoke(() =>
+                    {
+                        tbcSearchError.Visibility = Visibility.Visible;
+                    });
+                    break;
+                case 2:
+                    Dispatcher.Invoke(() =>
+                    {
+                        tbcDirectoryError.Visibility = Visibility.Visible;
+                    });
+                    break;
             }
             Dispatcher.Invoke(() =>
             {

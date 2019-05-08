@@ -34,24 +34,21 @@ namespace SearchLib
                 List<string> filterInName = FilterNames(filePaths, this.Filter);
                 this.findings = filterInName;
                 
-                Task<bool>[] tasks = new Task<bool>[filePaths.Length];
-                for (int i = 0; i < filePaths.Length; i++)
+                var tasks = new List<Task<bool>>();
+                filePaths.ToList().ForEach(p =>
                 {
-                    int j = i;
                     Task<bool> task = Task<bool>.Factory.StartNew(() => {
-                        return FilterData(filePaths[j]);
+                        return FilterData(p);
                     });
-                    tasks[j] = task;
-                }
-                Task.WaitAll(tasks);
-                for (int i = 0; i < tasks.Length; i++)
+                    tasks.Add(task);
+                });
+                var tasksarray = tasks.ToArray();
+                Task.WaitAll(tasksarray);
+                for (int i = 0; i < tasksarray.Length; i++)
                 {
-                    if (tasks[i].Result)
+                    if (tasksarray[i].Result && !findings.Contains(filePaths[i]))
                     {
-                        if (!findings.Contains(filePaths[i]))
-                        {
-                            findings.Add(filePaths[i]);
-                        }
+                        findings.Add(filePaths[i]);
                     }
                 }
                 return 0;
@@ -86,7 +83,7 @@ namespace SearchLib
                     contains = true;
                     break;
                 }
-                prev = buffer.Skip(buffer.Length-prev.Length).Take(prev.Length).ToArray();
+                prev = buffer.Skip(buffer.Length-prev.Length).Take(prev.Length).ToArray(); //checks whether the filter is split between two buffers
             }
             streamReader.Close();
             return contains;
@@ -100,15 +97,13 @@ namespace SearchLib
              * as a substring within the naming part of the path
              */
             var relevantPaths = new List<string>();
-            string currentName = "";
-            for (int i = 0; i < filePaths.Length; i++)
+            filePaths.ToList().ForEach(p =>
             {
-                currentName = Suffix(filePaths[i]);
-                if (currentName.Contains(filter))
+                if (Suffix(p).Contains(filter))
                 {
-                    relevantPaths.Add(filePaths[i]);
+                    relevantPaths.Add(p);
                 }
-            }
+            });
 
             return relevantPaths;
         }
